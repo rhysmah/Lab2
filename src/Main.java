@@ -71,16 +71,18 @@ public class Main {
                     // Once we've compared all target word letters to comparison word letters,
                     // check if comparison word has any letters left; if so, they two words are
                     // not anagrams.
-                    boolean letterNotFound = true;
-                    for (char comparisonWordLetter : comparisonWord) {
-                        if (comparisonWordLetter != '\0') {
-                            letterNotFound = false;
-                            break;
+                    boolean isAnagram   = true;
+                    int     letterIndex = 0;
+
+                    while (letterIndex < comparisonWord.length && isAnagram) {
+                        if (comparisonWord[letterIndex] != '\0') {
+                            isAnagram = false;
                         }
+                        ++letterIndex;
                     }
                     // If there are no letters left in the comparison word, the two words are
                     // anagrams, so we increase the count in the array.
-                    if (letterNotFound) {
+                    if (isAnagram) {
                         ++anagramCounter[wordsIndex];
                     }
                 }
@@ -128,12 +130,14 @@ public class Main {
                     Arrays.sort(comparisonWord);
 
                     // Loop through sorted arrays and check that they're equal.
-                    boolean isAnagram = true;
-                    for (int k = 0; k < targetWord.length; ++k) {
-                        if (targetWord[k] != comparisonWord[k]) {
+                    boolean isAnagram   = true;
+                    int     letterIndex = 0;
+
+                    while (letterIndex < targetWord.length && isAnagram) {
+                        if (targetWord[letterIndex] != comparisonWord[letterIndex]) {
                             isAnagram = false;
-                            break;
                         }
+                        ++letterIndex;
                     }
                     // If the two sorted arrays are equal, they're anagrams; increase count.
                     if (isAnagram) {
@@ -186,19 +190,24 @@ public class Main {
                     // Using larger size, so we can increment letter counts using letter ascii code.
                     int[] comparisonLetterCounter = new int[123];
 
-                    // Convert strings to char arrays and sort.
+                    // Convert strings to char arrays, sort, and count all individual characters.
                     char[] comparisonWord = word.toCharArray();
-
                     for (char c : comparisonWord) {
                         ++comparisonLetterCounter[c];
                     }
-                    boolean isAnagram = true;
-                    for (int letterCountCompare = 0; letterCountCompare < comparisonLetterCounter.length; ++letterCountCompare) {
-                        if (targetLetterCounter[letterCountCompare] != comparisonLetterCounter[letterCountCompare]) {
+
+                    // Loop through both letter counters; if they do not have the same type of each character,
+                    // they're not anagrams; break loop.
+                    boolean isAnagram   = true;
+                    int     letterIndex = 0;
+
+                    while (letterIndex < comparisonLetterCounter.length && isAnagram) {
+                        if (targetLetterCounter[letterIndex] != comparisonLetterCounter[letterIndex]) {
                             isAnagram = false;
-                            break;
                         }
+                        ++letterIndex;
                     }
+                    // If the two words have equal number of each character, they're anagrams; increase count.
                     if (isAnagram) {
                         ++anagramCounter[wordsIndex];
                     }
